@@ -42,26 +42,6 @@ int[,,] InitMatrix(int rows, int columns, int cell)
     return matrix;
 }
 
-/*
-// проверяем уникальность элементов
-void MatrixOfUniqueElements(int[,,] matrix)
-{
-    Dictionary<int, int> UniqueElements= new Dictionary<int, int>();
-    int[,,] matrix = InitMatrix(countOfRows, countOfColumns, countOfCell);
-    for (int i = 0; i < matrix.GetLength(0); i++)
-        {
-            for (int j = 0; j < matrix.GetLength(1); j++)
-            {
-                for (int z = 0; z < matrix.GetLength(2); z++)
-                {
-                    if(MatrixOfUniqueElements.ContainsKey(matrix[i, j, z])) 
-                        .......?
-                }
-            }
-        }
-}
-*/
-
 void PrintMatrix(int[,,] matrix)
 {
     for (int i = 0; i < matrix.GetLength(0); i++)
@@ -80,5 +60,29 @@ void PrintMatrix(int[,,] matrix)
 int countOfRows = GetNumber("Введите кол-во строк:");
 int countOfColumns = GetNumber("Введите кол-во столбцов:");
 int countOfCell = GetNumber("Введите кол-во ячеек:");
-int[,,] matrix = InitMatrix(countOfRows, countOfColumns, countOfCell);
-PrintMatrix(matrix);
+
+// проверяем уникальность элементов
+void MatrixOfUniqueElements(int[,,] matrix)
+{
+    Dictionary<int, int> UniqueElements= new Dictionary<int, int>();
+    int[,,] matrix = InitMatrix(countOfRows, countOfColumns, countOfCell);
+    Random rnd = new Random();
+    int randomNumber = 0;
+    for (int i = 0; i < matrix.GetLength(0); i++)
+    {
+        for (int j = 0; j < matrix.GetLength(1); j++)
+        {
+            for (int z = 0; z < matrix.GetLength(2); z++)
+            {
+                while(!UniqueElements.ContainsKey(randomNumber))  //генерируем рандомное число, до тех пор, пока не найдем, что его нет в словаре
+                {
+                    randomNumber = rnd.Next(10,100);
+                }
+                matrix[i,j,z] = randomNumber;
+                UniqueElements.Add(randomNumber, 1);
+            }
+        }
+    }
+}
+int[,,] uniqueMatrix = MatrixOfUniqueElements(matrix);
+PrintMatrix(uniqueMatrix);
